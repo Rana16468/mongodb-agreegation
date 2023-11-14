@@ -391,3 +391,19 @@ db.getCollection('massive-data').aggregate([
 ```
 
 # problem solution no  6
+
+// db.getCollection('massive-data').updateMany({},{$set:{'balance':1050}},{upsert:true})
+db.getCollection('massive-data').aggregate(
+{
+//statge 1
+$group: { _id: "$company",totalCompany:{$sum:1},totalBalance:{$sum:'$balance'}},
+},
+//statge 2
+{
+$sort: {totalBalance:-1}
+},
+//statge 3
+{
+$limit: 2
+}
+)
